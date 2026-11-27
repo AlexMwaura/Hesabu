@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+hesabu:
+  daraja:
+    # Sandbox by default. Production is https://api.safaricom.co.ke
+    base-url: https://sandbox.safaricom.co.ke
+    consumer-key: ${DARAJA_CONSUMER_KEY:}
+    consumer-secret: ${DARAJA_CONSUMER_SECRET:}
+    # 174379 and its passkey are Safaricom's published sandbox test values for M-Pesa Express (STK Push).
+    stk-short-code: ${DARAJA_STK_SHORTCODE:174379}
+    stk-passkey: ${DARAJA_STK_PASSKEY:bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919}
+    # Till (Buy Goods) or Paybill that receives C2B payments; sandbox apps get a 600xxx test shortcode.
+    c2b-short-code: ${DARAJA_C2B_SHORTCODE:600000}
+    # Public HTTPS base URL that reaches this app (e.g. a cloudflared tunnel). Daraja rejects callback
+    # URLs containing words such as "mpesa" or "safaricom", so the paths below avoid them.
+    public-base-url: ${PUBLIC_BASE_URL:https://example.invalid}
+    c2b-simulate-path: /mpesa/c2b/v1/simulate
+
+  vscu:
+    # A real VSCU is a KRA-issued JAR running on a machine in the shop. The default points at the
+    # fake VSCU inside this app so the spike runs without KRA sandbox access.
+    base-url: ${VSCU_BASE_URL:http://localhost:8080/fake-vscu}
+    tin: ${VSCU_TIN:P000000000A}
+    bhf-id: ${VSCU_BHF_ID:00}
+    device-serial: ${VSCU_DEVICE_SERIAL:hesabu-spike-001}
+    connect-timeout-ms: 2000
+    read-timeout-ms: 5000
