@@ -1,0 +1,2 @@
+server:
+  port: ${FAKE_VSCU_PORT:8088}

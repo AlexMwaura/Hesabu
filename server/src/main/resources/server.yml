@@ -1,0 +1,25 @@
+# Hesabu cloud: catalogue, M-Pesa (Safaricom calls this), sync from hubs, owner reports.
+server:
+  port: ${PORT:8080}
+
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/hesabu}
+    username: ${DATABASE_USER:hesabu}
+    password: ${DATABASE_PASSWORD:hesabu}
+  flyway:
+    locations: classpath:db/server
+  jackson:
+    default-property-inclusion: non_null
+
+hesabu:
+  # TODO(auth): replace with real operator sign-in before anyone outside the team runs this.
+  admin-token: ${HESABU_ADMIN_TOKEN:dev-admin-token}
+  daraja:
+    # TODO(sandbox): the fake Daraja listens here now. Sandbox: https://sandbox.safaricom.co.ke
+    base-url: ${DARAJA_BASE_URL:http://localhost:8089}
+    consumer-key: ${DARAJA_CONSUMER_KEY:fake-key}
+    consumer-secret: ${DARAJA_CONSUMER_SECRET:fake-secret}
+    # Public HTTPS address Safaricom can reach (a tunnel in development). Callback paths avoid the
+    # words Daraja refuses in URLs ("mpesa", "safaricom").
+    public-base-url: ${PUBLIC_BASE_URL:http://localhost:8080}

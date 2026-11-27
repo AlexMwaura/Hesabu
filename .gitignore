@@ -1,5 +1,12 @@
 target/
+build/
+.gradle/
+.kotlin/
 .idea/
 *.iml
 .env
 application-local.yml
+*.db
+*.db-shm
+*.db-wal
+local.properties
