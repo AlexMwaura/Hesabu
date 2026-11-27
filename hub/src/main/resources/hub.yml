@@ -1,0 +1,37 @@
+# The in-shop hub: one per branch, on a small always-on box on the shop's Wi-Fi.
+# Tills talk to it over the LAN; it talks to the VSCU (also in the shop) and to the cloud.
+server:
+  port: ${HUB_PORT:8070}
+
+spring:
+  datasource:
+    url: jdbc:sqlite:${HUB_DB:./hesabu-hub.db}?journal_mode=WAL&busy_timeout=5000
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      # SQLite allows one writer; a single connection avoids SQLITE_BUSY between requests.
+      maximum-pool-size: 1
+  flyway:
+    locations: classpath:db/hub
+  jackson:
+    default-property-inclusion: non_null
+
+hesabu:
+  hub:
+    branch-code: ${HUB_BRANCH_CODE:HQ}
+    trade-name: ${HUB_TRADE_NAME:Hesabu Test Shop}
+    # TODO(pairing): replace this shared token with per-till pairing (a code shown on the hub screen).
+    till-token: ${HUB_TILL_TOKEN:dev-till-token}
+    cloud:
+      base-url: ${HESABU_CLOUD_URL:http://localhost:8080}
+      hub-key: ${HESABU_HUB_KEY:}
+      sync-enabled: ${HESABU_SYNC_ENABLED:true}
+      sync-interval-ms: 5000
+      timeout-ms: 3000
+  vscu:
+    # TODO(kra-sandbox): the fake VSCU listens here now; KRA's real VSCU JAR uses the same port.
+    base-url: ${VSCU_BASE_URL:http://localhost:8088}
+    tin: ${VSCU_TIN:P000000000A}
+    bhf-id: ${VSCU_BHF_ID:00}
+    device-serial: ${VSCU_DEVICE_SERIAL:hesabu-dev-001}
+    connect-timeout-ms: 1000
+    read-timeout-ms: 5000

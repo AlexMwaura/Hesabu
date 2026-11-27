@@ -1,0 +1,6 @@
+server:
+  port: ${FAKE_DARAJA_PORT:8089}
+fake:
+  daraja:
+    # How long the "customer" takes to approve an STK prompt.
+    stk-delay-ms: 800
